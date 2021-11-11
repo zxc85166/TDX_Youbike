@@ -1,53 +1,20 @@
-# `Vite + Vue 3 + Tailwind CSS (starter) ⚡`
+# `TDX練習⚡`
 
-![Vite, Vue, Tailwind CSS](https://user-images.githubusercontent.com/11320080/111277027-a9384c00-8640-11eb-8323-21889bd7c609.png)
+# TDX_Youbike
 
-This starter template also includes:
+### 專案開發時間
 
-- [Tailwind CSS v3.0.0-alpha ⚠](https://github.com/tailwindlabs/tailwindcss/releases/tag/v3.0.0-alpha.1)
-- [Vue Router 4.x](https://github.com/vuejs/vue-router-next)
-- [Inter var font](https://github.com/rsms/inter) (self-hosted, woff2, v3.19, with 'preload' attr, check out index.html)
-- [Headless UI](https://headlessui.dev/vue/menu) - unstyled, fully accessible UI components, designed to integrate beautifully with Tailwind CSS
-- [Heroicons](https://github.com/tailwindlabs/heroicons#vue) - beautiful hand-crafted SVG icons,
-by the makers of Tailwind CSS
+- 2021.11.12 ~ 開發中
 
-First-party plugins needed for Tailwind UI:
+### 說明
 
-- [tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms)
-- [tailwindcss/typography](https://github.com/tailwindlabs/tailwindcss-typography)
-- [tailwindcss/line-clamp](https://github.com/tailwindlabs/tailwindcss-line-clamp)
-- [tailwindcss/aspect-ratio](https://github.com/tailwindlabs/tailwindcss-aspect-ratio)
+- 自行車道地圖資訊整合網
+- The F2E 3rd 前端修練精神時光屋(未報名)
+- 使用 Vue 3 script setup
+- 介接 TDX 運輸資料 API => [自行車](https://ptx.transportdata.tw/MOTC?t=Bike&v=2)
+- 設計稿提供：設計師 [KT](https://2021.thef2e.com/users/6296432819610583177)
+- 設計稿網址：[Figma](https://www.figma.com/file/LZDSaCywGe23QU5dwmKokA/%E8%87%AA%E8%A1%8C%E8%BB%8A%E9%81%93%E5%9C%B0%E5%9C%96%E8%B3%87%E8%A8%8A%E6%95%B4%E5%90%88%E7%B6%B2?node-id=0%3A1)
 
-### Getting Started 🚀
+### 成果展示
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/web2033/vite-vue3-tailwind-starter)
-
-```sh
-npx degit web2033/vite-vue3-tailwind-starter vvt-app
-cd vvt-app
-```
-
-npm:
-```sh
-npm i
-npm run dev
-npm run build
-npm run serve
-```
-
-yarn:
-```sh
-yarn
-yarn dev
-yarn build
-yarn serve
-```
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/web2033/vite-vue3-tailwind-starter)
-
-#### Bonus links
-- [Enabling https on localhost](https://github.com/web2033/vite-vue3-tailwind-starter/discussions/112) (dev notes)
-- [Vite dev server with netlify dev support](https://github.com/web2033/vite-vue3-tailwind-starter/discussions/113) (dev notes)
-- [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) - recommended (instead of Vetur) VSCode extension built specifically for Vue 3
-- [Pinia](https://pinia.esm.dev/introduction.html) - state-management alternative to Vuex 4 with a similar to upcoming Vuex 5 API
-- [VueUse](https://vueuse.org/functions.html) - collection of essential Vue Composition Utilities
+- https://2021tdx-cancan.netlify.app/
