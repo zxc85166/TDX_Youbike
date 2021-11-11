@@ -17,4 +17,4 @@
 
 ### 成果展示
 
-- https://2021tdx-cancan.netlify.app/
+- https://2021tdx-youbike-cancan.netlify.app/

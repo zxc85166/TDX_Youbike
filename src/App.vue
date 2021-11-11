@@ -10,8 +10,8 @@
   </div>
 </template>
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap");
 body {
+  background-color: #e5e5e5;
   font-family: "Noto Sans TC", sans-serif;
 }
 </style>

@@ -9,6 +9,9 @@ module.exports = {
         yellow: {
           DEFAULT: "#FED801",
         },
+        gray: {
+          DEFAULT: "#7A7A7A",
+        },
       },
       fontFamily: {
         sans: ['"Inter var"', ...defaultTheme.fontFamily.sans],
