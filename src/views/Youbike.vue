@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import { Switch } from '@headlessui/vue'
 import { DirectionsBikeFilled } from '@vicons/material'
 import { Parking } from '@vicons/fa'
+
 const enabled = ref(false)
 </script>
 
@@ -38,6 +39,13 @@ const enabled = ref(false)
             <div class="w-56"></div>
         </div>
     </header>
-    <h2>尋找youbike</h2>
-    <ButtonRound />
+    <div id="mapid">
+        <h2>尋找youbike</h2>
+        <ButtonRound />
+    </div>
 </template>
+<style>
+#mapid {
+    height: 100vh;
+}
+</style>
