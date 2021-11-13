@@ -1,6 +1,7 @@
 import Home from "./views/Home.vue";
 import Youbike from "./views/Youbike.vue";
 import Lane from "./views/Lane.vue";
+import Lanemap from "./views/Lanemap.vue";
 import Round from "./views/Round.vue";
 import NotFound from "./views/NotFound.vue";
 
@@ -16,6 +17,11 @@ export const routes = [
     path: "/lane",
     meta: { title: "Lane" },
     component: Lane,
+  },
+  {
+    path: "/lanemap",
+    meta: { title: "Lanemap" },
+    component: Lanemap,
   },
   {
     path: "/round",

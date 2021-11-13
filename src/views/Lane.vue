@@ -1,13 +1,19 @@
 <script setup>
 import axios from 'axios';
 import jsSHA from "jssha";
+import { useRouter } from 'vue-router'
+import { useStore } from "@/store/store.js";
 import { ref, watch } from "vue";
+import { LocationOnFilled, LessThanFilled } from '@vicons/material'
 import {
     Listbox,
     ListboxButton,
     ListboxOptions,
     ListboxOption,
 } from "@headlessui/vue";
+//router與pinia store
+const router = useRouter()
+const store = useStore();
 //顯示開關
 const noData = ref(true); //尚未選擇任何縣市
 // api參數儲存區
@@ -22,21 +28,19 @@ const cities = [
     { id: 6, name: "臺南市", value: "Tainan" },
     { id: 7, name: "高雄市", value: "Kaohsiung" },
     { id: 8, name: "基隆市", value: "Keelung" },
-    { id: 9, name: "新竹市", value: "Hsinchu" },
-    { id: 10, name: "新竹縣", value: "HsinchuCounty" },
-    { id: 11, name: "苗栗縣", value: "MiaoliCounty" },
-    { id: 12, name: "彰化縣", value: "ChanghuaCounty" },
-    { id: 13, name: "南投縣", value: "NantouCounty" },
-    { id: 14, name: "雲林縣", value: "YunlinCounty" },
-    { id: 15, name: "嘉義縣", value: "ChiayiCounty" },
-    { id: 16, name: "嘉義市", value: "Chiayi" },
-    { id: 17, name: "屏東縣", value: "PingtungCounty" },
-    { id: 18, name: "宜蘭縣", value: "YilanCounty" },
-    { id: 19, name: "花蓮縣", value: "HualienCounty" },
-    { id: 20, name: "臺東縣", value: "TaitungCounty" },
-    { id: 21, name: "金門縣", value: "KinmenCounty" },
-    { id: 22, name: "澎湖縣", value: "PenghuCounty" },
-    { id: 23, name: "連江縣", value: "LienchiangCounty" },
+    { id: 9, name: "新竹縣", value: "HsinchuCounty" },
+    { id: 10, name: "苗栗縣", value: "MiaoliCounty" },
+    { id: 11, name: "彰化縣", value: "ChanghuaCounty" },
+    { id: 12, name: "南投縣", value: "NantouCounty" },
+    { id: 13, name: "雲林縣", value: "YunlinCounty" },
+    { id: 14, name: "嘉義縣", value: "ChiayiCounty" },
+    { id: 15, name: "嘉義市", value: "Chiayi" },
+    { id: 16, name: "屏東縣", value: "PingtungCounty" },
+    { id: 17, name: "宜蘭縣", value: "YilanCounty" },
+    { id: 18, name: "花蓮縣", value: "HualienCounty" },
+    { id: 19, name: "臺東縣", value: "TaitungCounty" },
+    { id: 20, name: "金門縣", value: "KinmenCounty" },
+    { id: 21, name: "澎湖縣", value: "PenghuCounty" },
 ];
 
 const selectedCity = ref(cities[0]);
@@ -49,11 +53,12 @@ function getLanes() {
     })
         .then((res) => {
             const data = res.data;
-            Lanedatas.value = data;
-            console.log(data);
-            for (let index = 0; index < Lanedatas.value.length; index++) {
-                Lanedatas.value[index].visibility = false;
-            }
+            let mapLanedatas = data.map((item) => {
+                item.CyclingLength = item.CyclingLength / 1000;
+                return item
+            });
+            Lanedatas.value = mapLanedatas;
+
             if (data.length === 0) {
                 alert("查無該條件資料");
                 noData.value = true;
@@ -63,6 +68,14 @@ function getLanes() {
             }
         })
         .catch((error) => console.log("error", error));
+}
+//openmap
+function openmap(RouteName, Geometry) {
+    router.push({
+        path: "/lanemap",
+    })
+    store.RouteName = RouteName;
+    store.Geometry = Geometry;
 }
 // API 驗證用
 function GetAuthorizationHeader() {
@@ -94,9 +107,16 @@ watch(selectedCity, () => {
     <header class="bg-yellow w-full h-[92px] relative">
         <div class="flex flex-row py-6 justify-around">
             <div class="w-56">
-                <router-link to="/">
-                    <img src="@/assets/pictures/title.png" alt="title" />
-                </router-link>
+                <div class="hidden lg:flex">
+                    <router-link to="/">
+                        <img src="@/assets/pictures/title.png" alt="title" />
+                    </router-link>
+                </div>
+                <div class="flex lg:hidden">
+                    <router-link to="/">
+                        <LessThanFilled class="ml-6 w-9" />
+                    </router-link>
+                </div>
             </div>
             <div></div>
             <div class="grid place-items-center">
@@ -131,27 +151,37 @@ watch(selectedCity, () => {
             </div>
         </div>
     </header>
-    <div class="mt-[42px] mx-[89px] -z-20">
+    <div class="grid place-items-center my-[42px] mx-4">
         <p v-if="noData" class="text-gray">尚未選擇任何縣市</p>
         <!-- cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-y-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-y-16">
             <div
                 v-for="(Lanedata) in Lanedatas"
                 :key="Lanedata.index"
-                class="card bordered shadow-lg max-w-[350px]"
+                class="card bordered shadow-md max-w-[362px] bg-white rounded-md cursor-pointer hover:shadow-inner"
             >
-                <div class="card-body p-5">
-                    <div class="grid gap-1">
+                <div
+                    class="grid grid-flow-row gap-1 m-3"
+                    @click="openmap(Lanedata.RouteName, Lanedata.Geometry)"
+                >
+                    <div class="flex">
+                        <h2 class="text-lg">{{ Lanedata.RouteName }}</h2>
+                        <h2 v-if="!Lanedata.RouteName" class="text-lg">一一</h2>
+                    </div>
+                    <div class="text-gray">
+                        <div class="grid place-items-end">
+                            <div>
+                                <span>{{ Lanedata.Direction }}</span>
+                                <span class="px-1">{{ Lanedata.CyclingLength }}</span>
+                                <span>公里</span>
+                            </div>
+                        </div>
                         <div class="flex">
-                            <h2 class="card-title">{{ Lanedata.RouteName }}</h2>
-                        </div>
-                        <div class="flex items-center">
-                            <ClockIcon class="md:h-5 md:w-5 h-4 w-4 mr-2" />
-                            <span class="text-gray-content text-sm">{{ Lanedata.Direction }}</span>
-                        </div>
-                        <div class="flex items-center pt-2">
-                            <LocationMarkerIcon class="h-5 w-5 text-blue-main" />
-                            <p class="text-gray-content ml-2">{{ Lanedata.City }}{{ Lanedata.Town }}</p>
+                            <LocationOnFilled class="w-5 text-yellow" />
+                            <p>
+                                <span class="px-1">{{ Lanedata.City }}</span>
+                                <span>{{ Lanedata.Town }}</span>
+                            </p>
                         </div>
                     </div>
                 </div>

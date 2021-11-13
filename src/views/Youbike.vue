@@ -12,9 +12,11 @@ const enabled = ref(false)
     <header class="bg-yellow w-full h-[92px]">
         <div class="flex flex-row py-6 justify-around">
             <div class="w-56">
-                <router-link to="/">
-                    <img src="@/assets/pictures/title.png" alt="title" />
-                </router-link>
+                <div class="hidden lg:flex">
+                    <router-link to="/">
+                        <img src="@/assets/pictures/title.png" alt="title" />
+                    </router-link>
+                </div>
             </div>
             <div class="bg-white rounded-full flex">
                 <Switch
