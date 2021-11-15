@@ -14,10 +14,6 @@ import {
 //router與pinia store
 const router = useRouter();
 const store = useStore();
-//顯示開關
-const noData = ref(true); //尚未選擇任何縣市
-// api參數儲存區
-const Lanedatas = ref([]);
 //
 const cities = [
   { id: 1, name: "所有縣市", value: "" },
@@ -57,14 +53,13 @@ function getLanes() {
         item.CyclingLength = item.CyclingLength / 1000;
         return item;
       });
-      Lanedatas.value = mapLanedatas;
+      // store.$patch.BikeRoute(mapLanedatas);
+      store.$patch({
+        BikeRoute: mapLanedatas,
+      });
 
       if (data.length === 0) {
         alert("查無該條件資料");
-        noData.value = true;
-      } else {
-        noData.value = false;
-        // document.getElementById("showRes").scrollIntoView({ behavior: "smooth" });
       }
     })
     .catch((error) => console.log("error", error));
@@ -178,13 +173,13 @@ watch(selectedCity, () => {
     </div>
   </header>
   <div class="grid place-items-center my-[42px] mx-4">
-    <p v-if="noData" class="text-gray">尚未選擇任何縣市</p>
+    <p v-if="!store.BikeRoute" class="text-gray">尚未選擇任何縣市</p>
     <!-- cards -->
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-y-16"
     >
       <div
-        v-for="Lanedata in Lanedatas"
+        v-for="Lanedata in store.BikeRoute"
         :key="Lanedata.index"
         class="
           card

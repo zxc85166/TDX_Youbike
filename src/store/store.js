@@ -7,5 +7,7 @@ export const useStore = defineStore({
   state: () => ({
     RouteName: "",
     Geometry: [],
+    // 自行車的路線
+    BikeRoute: null,
   }),
 });

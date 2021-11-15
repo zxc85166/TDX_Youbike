@@ -1,30 +1,35 @@
 <script setup>
 import { LessThanFilled } from "@vicons/material";
 import { useStore } from "@/store/store.js";
+import { useRouter } from "vue-router";
+import { onMounted } from "vue";
+import "leaflet/dist/leaflet.css";
+import { ref } from "vue";
 import L from "leaflet";
 import Wkt from "wicket";
-import "leaflet/dist/leaflet.css";
+const router = useRouter();
 const store = useStore();
+const mymap = ref(null);
+onMounted(() => {
+  mymap.value = L.map("mapid").setView([0, 0], 13);
+  L.tileLayer(
+    "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+    {
+      attribution:
+        'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: "mapbox/streets-v11",
+      tileSize: 512,
+      zoomOffset: -1,
+      accessToken:
+        "pk.eyJ1IjoienhjODUxNjYiLCJhIjoiY2t2eGZ2bmpmOXBqMTJucTFpeXNweDF3aiJ9.B0XCuzhDbsKDy-RZSq4zrw",
+    }
+  ).addTo(mymap.value);
 
-// Mapbox
-const mymap = L.map("mapid").setView([0, 0], 13);
+  polyLine(store.Geometry);
+});
 
-L.tileLayer(
-  "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
-  {
-    attribution:
-      'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: "mapbox/streets-v11",
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken:
-      "pk.eyJ1IjoienhjODUxNjYiLCJhIjoiY2t2eGZ2bmpmOXBqMTJucTFpeXNweDF3aiJ9.B0XCuzhDbsKDy-RZSq4zrw",
-  }
-).addTo(mymap);
 // 畫出自行車的路線
-let myLayer = null;
-
 function polyLine(geo) {
   // 建立一個 wkt 的實體
   const wicket = new Wkt.Wkt();
@@ -40,27 +45,27 @@ function polyLine(geo) {
   };
   const myLayer = L.geoJSON(geojsonFeature, {
     style: myStyle,
-  }).addTo(mymap);
+  }).addTo(mymap.value);
 
   myLayer.addData(geojsonFeature);
   // zoom the map to the layer
-  mymap.fitBounds(myLayer.getBounds());
+  mymap.value.fitBounds(myLayer.getBounds());
+}
+//回首頁
+function goHome() {
+  router.push("/");
 }
 </script>
 
 <template>
   <header class="bg-yellow w-full h-[92px] relative">
-    <div class="flex flex-row py-6 justify-around">
-      <div class="w-56 flex-1">
-        <div class="hidden lg:flex">
-          <router-link to="/">
-            <img src="@/assets/pictures/title.png" alt="title" />
-          </router-link>
+    <div class="flex flex-row py-6 md:mx-6">
+      <div class="flex-1">
+        <div @click="goHome()" class="hidden lg:flex w-56 cursor-pointer">
+          <img src="@/assets/pictures/title.png" alt="title" />
         </div>
-        <div class="flex lg:hidden">
-          <router-link to="/">
-            <LessThanFilled class="ml-6 w-9" />
-          </router-link>
+        <div @click="goHome()" class="flex lg:hidden cursor-pointer">
+          <LessThanFilled class="ml-6 w-9" />
         </div>
       </div>
       <div class="mr-5 flex items-center text-lg flex-2">
@@ -68,8 +73,12 @@ function polyLine(geo) {
       </div>
     </div>
   </header>
-  <div id="mapid" class="grid place-items-center my-[42px] mx-4 h-screen">
-    <p v-if="!store.RouteName" class="text-gray">尚未選擇任何路線</p>
-    <p>{{ store.Geometry }}</p>
+  <div>
+    <div class="flex flex-row justify-center">
+      <div class="w-full h-full">
+        <p v-if="!store.RouteName" class="text-gray">尚未選擇任何路線</p>
+        <div id="mapid" class="w-full h-full"></div>
+      </div>
+    </div>
   </div>
 </template>
