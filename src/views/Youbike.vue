@@ -4,47 +4,8 @@ import { ref } from "vue";
 import { Switch } from "@headlessui/vue";
 import { DirectionsBikeFilled } from "@vicons/material";
 import { Parking } from "@vicons/fa";
-import { onMounted } from "vue";
-import L from "leaflet";
-import Wkt from "wicket";
+
 const enabled = ref(false);
-const mymap = ref(null);
-onMounted(() => {
-  mymap.value = L.map("mapid").setView([0, 0], 13);
-  L.tileLayer(
-    "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
-    {
-      attribution:
-        'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      maxZoom: 18,
-      id: "mapbox/streets-v11",
-      tileSize: 512,
-      zoomOffset: -1,
-      accessToken:
-        "pk.eyJ1IjoienhjODUxNjYiLCJhIjoiY2t3MHd2NWI3MWc2NTJvbGNseHQxc3BxdiJ9.JTXAfgaMqEaZ7zxa6S6Gqw",
-    }
-  ).addTo(mymap.value);
-  // 使用 navigator web api 獲取當下位置(經緯度)
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      function (position) {
-        const longitude = position.coords.longitude; // 經度
-        const latitude = position.coords.latitude; // 緯度
-        // 重新設定 view 的位置
-        mymap.value.setView([latitude, longitude], 13);
-        // 將經緯度當作參數傳給 getData 執行
-        //   getStationData(longitude, latitude);
-      },
-      // 錯誤訊息
-      function (e) {
-        const msg = e.code;
-        const dd = e.message;
-        console.error(msg);
-        console.error(dd);
-      }
-    );
-  }
-});
 </script>
 
 <template>
@@ -96,15 +57,13 @@ onMounted(() => {
       <div class="w-56"></div>
     </div>
   </header>
-
-  <div class="flex flex-row justify-center">
-    <div class="w-full h-full">
-      <div id="mapid" class="w-full h-full"></div>
-    </div>
-  </div>
-
-  <div class="absolute right-5 bottom-5">
+  <div id="mapid">
+    <h2>尋找youbike</h2>
     <ButtonRound />
   </div>
 </template>
-<style></style>
+<style>
+#mapid {
+  height: 100vh;
+}
+</style>
