@@ -21,7 +21,7 @@ onMounted(() => {
       tileSize: 512,
       zoomOffset: -1,
       accessToken:
-        "pk.eyJ1IjoienhjODUxNjYiLCJhIjoiY2t2eGZ2bmpmOXBqMTJucTFpeXNweDF3aiJ9.B0XCuzhDbsKDy-RZSq4zrw",
+        "pk.eyJ1IjoienhjODUxNjYiLCJhIjoiY2t3MHd2NWI3MWc2NTJvbGNseHQxc3BxdiJ9.JTXAfgaMqEaZ7zxa6S6Gqw",
     }
   ).addTo(mymap.value);
   // 使用 navigator web api 獲取當下位置(經緯度)
