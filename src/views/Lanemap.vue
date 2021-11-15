@@ -74,11 +74,7 @@ function goHome() {
     </div>
   </header>
   <div>
-    <div class="flex flex-row justify-center">
-      <div class="w-full h-full">
-        <p v-if="!store.RouteName" class="text-gray">尚未選擇任何路線</p>
-        <div id="mapid" class="w-full h-full"></div>
-      </div>
-    </div>
+    <p v-if="!store.RouteName" class="text-gray">尚未選擇任何路線</p>
+    <div id="mapid"></div>
   </div>
 </template>

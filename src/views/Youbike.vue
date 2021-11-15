@@ -4,7 +4,43 @@ import { ref } from "vue";
 import { Switch } from "@headlessui/vue";
 import { DirectionsBikeFilled } from "@vicons/material";
 import { Parking } from "@vicons/fa";
+import { onMounted } from "vue";
+const mymap = ref(null);
+onMounted(() => {
+  mymap.value = L.map("mapid").setView([0, 0], 13);
+  L.tileLayer(
+    "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+    {
+      attribution:
+        'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: "mapbox/streets-v11",
+      tileSize: 512,
+      zoomOffset: -1,
+      accessToken:
+        "pk.eyJ1IjoienhjODUxNjYiLCJhIjoiY2t3MHd2NWI3MWc2NTJvbGNseHQxc3BxdiJ9.JTXAfgaMqEaZ7zxa6S6Gqw",
+    }
+  ).addTo(mymap.value);
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        const longitude = position.coords.longitude; // 經度
+        const latitude = position.coords.latitude; // 緯度
 
+        // 重新設定 view 的位置
+        mymap.value.setView([latitude, longitude], 18);
+        // 將經緯度當作參數傳給 getData 執行
+      },
+      // 錯誤訊息
+      function (e) {
+        const msg = e.code;
+        const dd = e.message;
+        console.error(msg);
+        console.error(dd);
+      }
+    );
+  }
+});
 const enabled = ref(false);
 </script>
 
@@ -57,13 +93,7 @@ const enabled = ref(false);
       <div class="w-56"></div>
     </div>
   </header>
-  <div id="mapid">
-    <h2>尋找youbike</h2>
-    <ButtonRound />
-  </div>
+  <div id="mapid"></div>
+
+  <ButtonRound />
 </template>
-<style>
-#mapid {
-  height: 100vh;
-}
-</style>

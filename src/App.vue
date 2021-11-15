@@ -1,6 +1,4 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
   <div>
@@ -13,5 +11,8 @@
 body {
   background-color: #e5e5e5;
   font-family: "Noto Sans TC", sans-serif;
+}
+#mapid {
+  height: 100vh;
 }
 </style>
