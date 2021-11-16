@@ -21,8 +21,7 @@ onMounted(() => {
       id: "mapbox/streets-v11",
       tileSize: 512,
       zoomOffset: -1,
-      accessToken:
-        "pk.eyJ1IjoienhjODUxNjYiLCJhIjoiY2t3MHd2NWI3MWc2NTJvbGNseHQxc3BxdiJ9.JTXAfgaMqEaZ7zxa6S6Gqw",
+      accessToken: import.meta.env.VITE_APP_accessToken,
     }
   ).addTo(mymap.value);
 
@@ -51,6 +50,7 @@ function polyLine(geo) {
   // zoom the map to the layer
   mymap.value.fitBounds(myLayer.getBounds());
 }
+
 //回首頁
 function goHome() {
   router.push("/");
@@ -68,9 +68,7 @@ function goHome() {
           <LessThanFilled class="ml-6 w-9" />
         </div>
       </div>
-      <div class="mr-5 flex items-center text-lg flex-2">
-        {{ store.RouteName }}
-      </div>
+      <div class="mr-5 flex items-center text-lg flex-2">{{ store.RouteName }}</div>
     </div>
   </header>
   <div>

@@ -23,8 +23,7 @@ onMounted(() => {
       id: "mapbox/streets-v11",
       tileSize: 512,
       zoomOffset: -1,
-      accessToken:
-        "pk.eyJ1IjoienhjODUxNjYiLCJhIjoiY2t3MHd2NWI3MWc2NTJvbGNseHQxc3BxdiJ9.JTXAfgaMqEaZ7zxa6S6Gqw",
+      accessToken: import.meta.env.VITE_APP_accessToken,
     }
   ).addTo(mymap.value);
   if (navigator.geolocation) {
@@ -35,7 +34,7 @@ onMounted(() => {
         // 重新設定 view 的位置
         mymap.value.setView([latitude, longitude], 18);
         // 將經緯度當作參數傳給 getData 執行
-        getAvailableData(latitude, longitude)
+        getAvailableData(longitude, latitude);
       },
       // 錯誤訊息
       function (e) {
@@ -91,7 +90,6 @@ function getAvailableData(longitude, latitude) {
         })
       })
       console.log('filterData', filterData.value)
-      alert('filterData', filterData.value)
       setMarker();
     })
     .catch((error) => console.log('error', error))
@@ -151,7 +149,10 @@ function GetAuthorizationHeader() {
       <div class="w-56"></div>
     </div>
   </header>
-  <div id="mapid"></div>
 
-  <ButtonRound />
+  <div id="mapid">
+    <div class="fixed top-5 right-5">
+      <ButtonRound />
+    </div>
+  </div>
 </template>

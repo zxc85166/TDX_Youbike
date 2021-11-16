@@ -2,26 +2,10 @@
 import { ShareLocationFilled } from "@vicons/material";
 </script>
 <template>
-  <div class="absolute right-5 bottom-5">
-    <div
-      class="
-        grid
-        place-items-center
-        text-sm
-        p-3
-        w-[62px]
-        h-[62px]
-        rounded-full
-        shadow
-        text-white
-        bg-black
-        border
-        hover:text-black hover:bg-white
-        cursor-pointer
-      "
-    >
-      <ShareLocationFilled class="w-5" />
-      <p>附近</p>
-    </div>
+  <div
+    class="grid place-items-center text-sm p-3 w-[62px] h-[62px] rounded-full shadow text-white bg-black border hover:text-black hover:bg-white cursor-pointer"
+  >
+    <ShareLocationFilled class="w-5" />
+    <p>附近</p>
   </div>
 </template>

@@ -8,6 +8,15 @@ export const useStore = defineStore({
     RouteName: "",
     Geometry: [],
     // 自行車的路線
-    BikeRoute: null,
+    BikeRoute: [],
+    //景點與美食
+    ScenicSpot: [],
+    Restaurant: [],
+    //詳情地圖
+    Roundmap: [],
+    //詳情景點
+    RoundDetails: [],
+    //詳情美食餐廳
+    RoundRestaurant: [],
   }),
 });

@@ -121,17 +121,7 @@ watch(selectedCity, () => {
             <ListboxButton>
               <div
                 tabindex="0"
-                class="
-                  flex
-                  justify-around
-                  btn
-                  w-[143px]
-                  md:w-[191px]
-                  text-white
-                  border-0
-                  text-sm
-                  md:text-base
-                "
+                class="flex justify-around btn w-[143px] md:w-[191px] text-white border-0 text-sm md:text-base"
               >
                 <span>{{ selectedCity.name }}</span>
                 <span>▼</span>
@@ -139,30 +129,14 @@ watch(selectedCity, () => {
             </ListboxButton>
             <ListboxOptions
               tabindex="0"
-              class="
-                py-2
-                menu
-                dropdown-content
-                rounded-b-lg
-                w-[143px]
-                md:w-[191px]
-                top-[40px]
-              "
+              class="py-2 menu dropdown-content rounded-b-lg w-[143px] md:w-[191px] top-[40px]"
             >
               <ListboxOption v-for="city in cities" :key="city" :value="city">
                 <li class="hover:bg-blue-main rounded-lg">
                   <a>
                     <p
-                      class="
-                        text-white
-                        cursor-pointer
-                        pl-5
-                        mx-auto
-                        hover:bg-yellow hover:text-black
-                      "
-                    >
-                      {{ city.name }}
-                    </p>
+                      class="text-white cursor-pointer pl-5 mx-auto hover:bg-yellow hover:text-black"
+                    >{{ city.name }}</p>
                   </a>
                 </li>
               </ListboxOption>
@@ -175,22 +149,11 @@ watch(selectedCity, () => {
   <div class="grid place-items-center my-[42px] mx-4">
     <p v-if="!store.BikeRoute" class="text-gray">尚未選擇任何縣市</p>
     <!-- cards -->
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-y-16"
-    >
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-y-16">
       <div
         v-for="Lanedata in store.BikeRoute"
         :key="Lanedata.index"
-        class="
-          card
-          bordered
-          shadow-md
-          max-w-[362px]
-          bg-white
-          rounded-md
-          cursor-pointer
-          hover:shadow-inner
-        "
+        class="card bordered shadow-md max-w-[362px] bg-white rounded-md cursor-pointer hover:shadow-inner"
       >
         <div
           class="grid grid-flow-row gap-1 m-3"
