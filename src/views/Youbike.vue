@@ -91,7 +91,7 @@ function getAvailableData(longitude, latitude) {
         })
       })
       console.log('filterData', filterData.value)
-
+      alert('filterData', filterData.value)
       setMarker();
     })
     .catch((error) => console.log('error', error))
