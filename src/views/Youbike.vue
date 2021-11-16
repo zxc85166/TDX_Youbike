@@ -32,9 +32,9 @@ onMounted(() => {
         const longitude = position.coords.longitude; // 經度
         const latitude = position.coords.latitude; // 緯度
         // 重新設定 view 的位置
-        mymap.value.setView([latitude, longitude], 18);
+        mymap.value.setView([latitude, longitude], 50);
         // 將經緯度當作參數傳給 getData 執行
-        getAvailableData(longitude, latitude);
+        getStationData(longitude, latitude);
       },
       // 錯誤訊息
       function (e) {
@@ -45,54 +45,86 @@ onMounted(() => {
       }
     );
   }
-
 });
 
 // 標記 icon
 function setMarker() {
   filterData.value.forEach((item) => {
-    // console.log(item.StationPosition.PositionLon, item.StationPosition.PositionLat)
-    L.marker([item.StationPosition.PositionLat, item.StationPosition.PositionLon]).addTo(mymap).bindPopup(
-      `<div class="card">
-    <div class="card-body">
-      <h5 class="card-title">${item.StationName.Zh_tw}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">${item.StationAddress.Zh_tw}</h6>
-      <p class="card-text mb-0">可租借車數：${item.AvailableRentBikes}</p>
-      <p class="card-text mt-0">可歸還車數：${item.AvailableReturnBikes}</p>
-    </div>
-  </div>`
-    )
-  })
+    console.log(
+      item.StationPosition.PositionLon,
+      item.StationPosition.PositionLat
+    );
+    L.marker([
+      item.StationPosition.PositionLat,
+      item.StationPosition.PositionLon,
+    ])
+      .addTo(mymap.value)
+      .bindPopup(
+        `<div class="font-bold text-lg">
+      <p class="mb-2">${item.StationAddress.Zh_tw}</p>
+      <p>可借車輛：${item.AvailableRentBikes}</p>
+      <p>可停空位：${item.AvailableReturnBikes}</p>
+      </div>`
+      );
+  });
 }
-
-// 串接附近的即時車位資料
-let filterData = ref([]);
-function getAvailableData(longitude, latitude) {
+// 串接附近的自行車租借站位資料
+const data = ref([]);
+function getStationData(longitude, latitude) {
   axios({
-    method: 'get',
-    // url: 'https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/Kaohsiung',
-    url: `https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/NearBy?$spatialFilter=nearby(${latitude},${longitude},500)`,
-    headers: GetAuthorizationHeader()
+    method: "get",
+    url: `https://ptx.transportdata.tw/MOTC/v2/Bike/Station/NearBy?$spatialFilter=nearby(${latitude},${longitude},500)`,
+    headers: GetAuthorizationHeader(),
   })
     .then((response) => {
-      console.log('車位資料', response)
+      console.log("租借站位資料", response);
+      data.value = response.data;
+
+      getAvailableData(longitude, latitude);
+    })
+    .catch((error) => console.log("error", error));
+  //標記自己位置
+  const myIcon = L.icon({
+    iconUrl: "src/assets/pictures/icon.svg",
+    iconSize: [50, 50],
+    popupAnchor: [0, -20],
+  });
+
+  L.marker([latitude, longitude], { icon: myIcon })
+    .addTo(mymap.value)
+    .bindPopup(
+      `<div class="font-bold text-lg">
+      <p class="mb-2">當前位置</p>
+      </div>`
+    );
+}
+// 串接附近的即時車位資料
+const filterData = ref([]);
+function getAvailableData(longitude, latitude) {
+  axios({
+    method: "get",
+    url: `https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/NearBy?$spatialFilter=nearby(${latitude},${longitude},500)`,
+    headers: GetAuthorizationHeader(),
+  })
+    .then((response) => {
+      console.log("車位資料", response);
       const availableData = response.data;
 
       // 比對
       availableData.forEach((availableItem) => {
-        data.forEach((stationItem) => {
+        data.value.forEach((stationItem) => {
           if (availableItem.StationUID === stationItem.StationUID) {
-            availableItem.StationName = stationItem.StationName
-            availableItem.StationAddress = stationItem.StationAddress
-            availableItem.StationPosition = stationItem.StationPosition
-            filterData.value.push(availableItem)
+            availableItem.StationName = stationItem.StationName;
+            availableItem.StationAddress = stationItem.StationAddress;
+            availableItem.StationPosition = stationItem.StationPosition;
+            filterData.value.push(availableItem);
           }
-        })
-      })
-      console.log('filterData', filterData.value)
+        });
+      });
+      console.log("filterData", filterData.value);
       setMarker();
     })
-    .catch((error) => console.log('error', error))
+    .catch((error) => console.log("error", error));
 }
 // API 驗證用
 function GetAuthorizationHeader() {
@@ -126,11 +158,19 @@ function GetAuthorizationHeader() {
           </router-link>
         </div>
       </div>
-      <div class="bg-white rounded-full flex">
+      <div class="bg-white rounded-full flex items-center">
         <Switch
           v-model="enabled"
           :class="enabled ? 'bg-black text-yellow' : 'bg-white text-black'"
-          class="flex flex-row items-center gap-5 justify-center h-[42px] w-[138px] rounded-full"
+          class="
+            flex flex-row
+            items-center
+            gap-5
+            justify-center
+            h-[42px]
+            w-[138px]
+            rounded-full
+          "
         >
           <DirectionsBikeFilled class="w-5" />
           <span>租</span>
@@ -139,7 +179,15 @@ function GetAuthorizationHeader() {
         <Switch
           v-model="enabled"
           :class="enabled ? 'bg-white text-black' : 'bg-black text-yellow'"
-          class="flex flex-row items-center gap-5 justify-center h-[42px] w-[138px] rounded-full"
+          class="
+            flex flex-row
+            items-center
+            gap-5
+            justify-center
+            h-[42px]
+            w-[138px]
+            rounded-full
+          "
         >
           <Parking class="w-5" />
           <span>還</span>
