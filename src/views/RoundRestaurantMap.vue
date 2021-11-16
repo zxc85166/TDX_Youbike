@@ -9,7 +9,8 @@ import L from "leaflet";
 const router = useRouter();
 const store = useStore();
 const mymap = ref(null);
-
+console.log(store.RoundRestaurant);
+console.log(store.RoundDetails);
 onMounted(() => {
     mymap.value = L.map("mapid").setView([0, 0], 13);
     L.tileLayer(
@@ -24,22 +25,25 @@ onMounted(() => {
             accessToken: import.meta.env.VITE_APP_accessToken,
         }
     ).addTo(mymap.value);
-    var geojsonFeature = {
-        "type": "Feature",
-        "properties": {
-            "name": "Coors Field",
-            "amenity": "Baseball Stadium",
-            "popupContent": "This is where the Rockies play!"
-        },
-        "geometry": {
-            "type": "Point",
-            "coordinates": [store.RoundRestaurant.Position.PositionLon, store.RoundRestaurant.Position.PositionLat]
-        }
-    };
-    L.geoJSON(geojsonFeature).addTo(mymap.value);
-    mymap.value.setView([store.RoundRestaurant.Position.PositionLat, store.RoundRestaurant.Position.PositionLon], 18);
-});
 
+
+    var marker = L.marker([store.RoundRestaurant.Position.PositionLat, store.RoundRestaurant.Position.PositionLon]).addTo(mymap.value);
+    mymap.value.setView([store.RoundRestaurant.Position.PositionLat, store.RoundRestaurant.Position.PositionLon], 18);
+    marker.bindPopup(
+        `<div class="bg-white rounded-lg text-center">
+         <div class="text-gray">
+            <div class="pb-5">
+            <img src="${store.RoundRestaurant.Picture.PictureUrl1}" />
+            </div>
+           <p class="text-black font-bold text-2xl">${store.RoundRestaurant.RestaurantName}</p>
+           <p class="mb-2">電話：${store.RoundRestaurant.Phone}</p>
+           <p class="mb-2">地址：${store.RoundRestaurant.Address}</p>
+           <p class="mb-2">營業時間：${store.RoundRestaurant.OpenTime}</p>
+           <p class="mb-2">介紹：${store.RoundRestaurant.Description}</p>
+         </div>
+       </div>`
+    ).openPopup();
+});
 
 //回首頁
 function goHome() {
@@ -58,11 +62,11 @@ function goHome() {
                     <LessThanFilled class="ml-6 w-9" />
                 </div>
             </div>
-            <div class="mr-5 flex items-center text-lg flex-2">{{ store.RouteName }}</div>
+            <div
+                class="mr-5 flex items-center text-lg flex-2"
+            >{{ store.RoundRestaurant.RestaurantName }}</div>
         </div>
     </header>
-    <div>
-        <p v-if="!store.RouteName" class="text-gray">尚未選擇任何路線</p>
-        <div id="mapid"></div>
-    </div>
+
+    <div id="mapid"></div>
 </template>

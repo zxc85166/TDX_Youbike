@@ -147,7 +147,7 @@ watch(selectedCity, () => {
     </div>
   </header>
   <div class="grid place-items-center my-[42px] mx-4">
-    <p v-if="!store.BikeRoute" class="text-gray">尚未選擇任何縣市</p>
+    <p v-if="selectedCity.value === '' && store.BikeRoute == ''" class="text-gray">尚未選擇任何縣市</p>
     <!-- cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-y-16">
       <div

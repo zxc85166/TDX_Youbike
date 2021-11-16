@@ -4,7 +4,8 @@ import Lane from "./views/Lane.vue";
 import Lanemap from "./views/Lanemap.vue";
 import Round from "./views/Round.vue";
 import RoundDetails from "./views/RoundDetails.vue";
-import Roundmap from "./views/Roundmap.vue";
+import RoundDetailsMap from "./views/RoundDetailsMap.vue";
+import RoundRestaurantMap from "./views/RoundRestaurantMap.vue";
 import NotFound from "./views/NotFound.vue";
 
 /** @type {import('vue-router').RouterOptions['routes']} */
@@ -36,9 +37,14 @@ export const routes = [
     component: RoundDetails,
   },
   {
-    path: "/roundmap",
-    meta: { title: "Roundmap" },
-    component: Roundmap,
+    path: "/RoundDetailsMap",
+    meta: { title: "RoundDetailsMap" },
+    component: RoundDetailsMap,
+  },
+  {
+    path: "/RoundRestaurantMap",
+    meta: { title: "RoundRestaurantMap" },
+    component: RoundRestaurantMap,
   },
   { path: "/:path(.*)", component: NotFound },
 ];
