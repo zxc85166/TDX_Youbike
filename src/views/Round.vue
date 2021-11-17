@@ -6,7 +6,7 @@ import { ref } from 'vue'
 import { useStore } from "@/store/store.js";
 import { useRouter } from "vue-router";
 import { Switch } from '@headlessui/vue'
-import { FastfoodFilled } from '@vicons/material'
+import { FastfoodFilled, LessThanFilled } from '@vicons/material'
 import { Mountain } from '@vicons/fa'
 import { onMounted } from "vue";
 const enabled = ref(false)
@@ -33,18 +33,18 @@ onMounted(() => {
     }
 
 });
-// 串接附近的即時景點資料
 
+// 串接附近的即時景點資料
 function getScenicSpotData(longitude, latitude) {
     axios({
         method: 'get',
-        url: `https://ptx.transportdata.tw/MOTC/v2/Tourism/ScenicSpot/MiaoliCounty?$top=10&$format=JSON`,
-        // url: `https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/NearBy?$spatialFilter=nearby(${latitude},${longitude},500)`,
+        url: `https://ptx.transportdata.tw/MOTC/v2/Tourism/ScenicSpot?$top=30&$spatialFilter=nearby(${longitude},${latitude},500)&$format=JSON`,
         headers: GetAuthorizationHeader()
     })
         .then((response) => {
             const availableData = response.data;
             store.ScenicSpot = availableData;
+            console.log(store.ScenicSpot);
         })
         .catch((error) => console.log('error', error))
 }
@@ -53,8 +53,8 @@ function getScenicSpotData(longitude, latitude) {
 function getRestaurantData(longitude, latitude) {
     axios({
         method: 'get',
-        url: `https://ptx.transportdata.tw/MOTC/v2/Tourism/Restaurant/NantouCounty?$top=10&$format=JSON`,
-        // url: `https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/NearBy?$spatialFilter=nearby(${latitude},${longitude},500)`,
+        // url: `https://ptx.transportdata.tw/MOTC/v2/Tourism/Restaurant/NantouCounty?$top=10&$format=JSON`,
+        url: `https://ptx.transportdata.tw/MOTC/v2/Tourism/Restaurant?$top=30&$spatialFilter=nearby(${longitude},${latitude},500)&$format=JSON`,
         headers: GetAuthorizationHeader()
     })
         .then((response) => {
@@ -102,13 +102,21 @@ function openRestaurantDetails(Restaurant) {
 </script>
 
 <template>
-    <header class="bg-yellow w-full h-[92px]">
+    <header class="bg-yellow w-full h-[92px] relative">
         <div class="flex flex-row py-6 justify-around">
             <div class="w-56">
-                <router-link to="/">
-                    <img src="@/assets/pictures/title.png" alt="title" />
-                </router-link>
+                <div class="hidden lg:flex">
+                    <router-link to="/">
+                        <img src="@/assets/pictures/title.png" alt="title" />
+                    </router-link>
+                </div>
+                <div class="flex lg:hidden">
+                    <router-link to="/">
+                        <LessThanFilled class="ml-6 w-9" />
+                    </router-link>
+                </div>
             </div>
+            <div></div>
             <div class="bg-white rounded-full flex">
                 <Switch
                     v-model="enabled"
@@ -163,12 +171,6 @@ function openRestaurantDetails(Restaurant) {
                             <div class="flex-1">
                                 <h2 class="text-lg">{{ ScenicSpot.Name }}</h2>
                                 <h2 v-if="!ScenicSpot.Name" class="text-lg">一一</h2>
-                            </div>
-                            <div class="flex-none">
-                                <div class="text-yellow">
-                                    <span class="px-1">{{ ScenicSpot.CyclingLength }}</span>
-                                    <span>km</span>
-                                </div>
                             </div>
                         </div>
 

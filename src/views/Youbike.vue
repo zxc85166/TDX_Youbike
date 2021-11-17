@@ -4,7 +4,7 @@ import jsSHA from "jssha";
 import ButtonRound from "@/components/ButtonRound.vue";
 import { ref } from "vue";
 import { Switch } from "@headlessui/vue";
-import { DirectionsBikeFilled } from "@vicons/material";
+import { DirectionsBikeFilled, LessThanFilled } from "@vicons/material";
 import { Parking } from "@vicons/fa";
 import { onMounted } from "vue";
 // 切換狀態
@@ -48,16 +48,14 @@ onMounted(() => {
 });
 
 // 標記 icon
+
+
 function setMarker() {
   filterData.value.forEach((item) => {
-    console.log(
-      item.StationPosition.PositionLon,
-      item.StationPosition.PositionLat
-    );
     L.marker([
       item.StationPosition.PositionLat,
       item.StationPosition.PositionLon,
-    ])
+    ], { icon: nowIcon })
       .addTo(mymap.value)
       .bindPopup(
         `<div class="font-bold text-lg">
@@ -84,13 +82,13 @@ function getStationData(longitude, latitude) {
     })
     .catch((error) => console.log("error", error));
   //標記自己位置
-  const myIcon = L.icon({
-    iconUrl: "src/assets/pictures/icon.svg",
-    iconSize: [50, 50],
+  const nowIcon = L.icon({
+    iconUrl: "https://pbs.twimg.com/media/FEYfG6DakAAUjXk?format=png&name=120x120",
+    iconSize: [26, 22.29],
     popupAnchor: [0, -20],
   });
 
-  L.marker([latitude, longitude], { icon: myIcon })
+  L.marker([latitude, longitude], { icon: nowIcon })
     .addTo(mymap.value)
     .bindPopup(
       `<div class="font-bold text-lg">
@@ -149,7 +147,7 @@ function GetAuthorizationHeader() {
 </script>
 
 <template>
-  <header class="bg-yellow w-full h-[92px]">
+  <header class="bg-yellow w-full h-[92px] relative">
     <div class="flex flex-row py-6 justify-around">
       <div class="w-56">
         <div class="hidden lg:flex">
@@ -157,20 +155,17 @@ function GetAuthorizationHeader() {
             <img src="@/assets/pictures/title.png" alt="title" />
           </router-link>
         </div>
+        <div class="flex lg:hidden">
+          <router-link to="/">
+            <LessThanFilled class="ml-6 w-9" />
+          </router-link>
+        </div>
       </div>
       <div class="bg-white rounded-full flex items-center">
         <Switch
           v-model="enabled"
           :class="enabled ? 'bg-black text-yellow' : 'bg-white text-black'"
-          class="
-            flex flex-row
-            items-center
-            gap-5
-            justify-center
-            h-[42px]
-            w-[138px]
-            rounded-full
-          "
+          class="flex flex-row items-center gap-5 justify-center h-[42px] w-[138px] rounded-full"
         >
           <DirectionsBikeFilled class="w-5" />
           <span>租</span>
@@ -179,15 +174,7 @@ function GetAuthorizationHeader() {
         <Switch
           v-model="enabled"
           :class="enabled ? 'bg-white text-black' : 'bg-black text-yellow'"
-          class="
-            flex flex-row
-            items-center
-            gap-5
-            justify-center
-            h-[42px]
-            w-[138px]
-            rounded-full
-          "
+          class="flex flex-row items-center gap-5 justify-center h-[42px] w-[138px] rounded-full"
         >
           <Parking class="w-5" />
           <span>還</span>
