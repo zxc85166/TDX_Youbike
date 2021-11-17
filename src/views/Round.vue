@@ -1,12 +1,11 @@
 <script setup>
 import axios from "axios";
 import jsSHA from "jssha";
-import { LocalPhoneFilled } from "@vicons/material";
 import { ref } from 'vue'
 import { useStore } from "@/store/store.js";
 import { useRouter } from "vue-router";
 import { Switch } from '@headlessui/vue'
-import { FastfoodFilled, LessThanFilled } from '@vicons/material'
+import { FastfoodFilled, LessThanFilled, LocalPhoneFilled } from '@vicons/material'
 import { Mountain } from '@vicons/fa'
 import { onMounted } from "vue";
 const enabled = ref(false)
@@ -168,7 +167,7 @@ function openRestaurantDetails(Restaurant) {
                     <div class="grid">
                         <div class="flex">
                             <div class="flex-1">
-                                <h2 class="text-lg">{{ ScenicSpot.Name }}</h2>
+                                <h2 class="text-lg text-center">{{ ScenicSpot.Name }}</h2>
                                 <h2 v-if="!ScenicSpot.Name" class="text-lg">一一</h2>
                             </div>
                         </div>
@@ -213,14 +212,8 @@ function openRestaurantDetails(Restaurant) {
                     <div class="grid">
                         <div class="flex">
                             <div class="flex-1">
-                                <h2 class="text-lg">{{ Restaurant.Name }}</h2>
-                                <h2 v-if="!Restaurant.Name" class="text-lg">一一</h2>
-                            </div>
-                            <div class="flex-none">
-                                <div class="text-yellow">
-                                    <span class="px-1">{{ Restaurant.CyclingLength }}</span>
-                                    <span>km</span>
-                                </div>
+                                <h2 class="text-lg text-center">{{ Restaurant.Name }}</h2>
+                                <h2 v-if="!Restaurant.Name" class="text-lg">查無餐廳名</h2>
                             </div>
                         </div>
 

@@ -3,7 +3,7 @@ import { useStore } from "@/store/store.js";
 import { LessThanFilled } from "@vicons/material";
 import { useRouter } from "vue-router";
 import { Clock } from "@vicons/fa";
-import { LocationOnFilled, LocalPhoneFilled } from "@vicons/material";
+import { LocationOnFilled, LocalPhoneFilled, StoreTwotone } from "@vicons/material";
 const store = useStore();
 const router = useRouter();
 //回首頁
@@ -39,8 +39,12 @@ function goRoundRestaurantMap() {
         </div>
     </header>
     <div v-if="store.RoundDetails" class="mx-auto grid gap-5 w-4/5 md:w-1/3 my-7">
-        <div class="rounded-lg grid place-items-center">
+        <div @click="goRoundDetailsMap()" class="rounded-lg grid place-items-center cursor-pointer">
             <img :src="store.RoundDetails.Picture.PictureUrl1" class="rounded-lg shadow-xl" />
+        </div>
+        <div class="flex items-center">
+            <StoreTwotone class="w-7 text-yellow" />
+            <p class="ml-3">店名：{{ store.RoundDetails.Name }}</p>
         </div>
         <div class="flex items-center">
             <Clock class="w-6 text-yellow" />
@@ -51,7 +55,7 @@ function goRoundRestaurantMap() {
             <p class="ml-3">{{ store.RoundDetails.Phone }}</p>
         </div>
         <div class="flex items-center">
-            <LocationOnFilled class="text-yellow w-10" />
+            <LocationOnFilled class="text-yellow w-8" />
             <p class="ml-3">{{ store.RoundDetails.Address }}</p>
             <a @click="goRoundDetailsMap()" class="bg-yellow rounded-3xl ml-3 min-w-max">
                 <p class="mx-3 my-1 cursor-pointer hover:text-white">地圖</p>
@@ -62,8 +66,15 @@ function goRoundRestaurantMap() {
         </div>
     </div>
     <div v-if="store.RoundRestaurant" class="mx-auto grid gap-5 w-4/5 md:w-1/3 my-7">
-        <div class="rounded-lg grid place-items-center">
+        <div
+            @click="goRoundRestaurantMap()"
+            class="rounded-lg grid place-items-center cursor-pointer"
+        >
             <img :src="store.RoundRestaurant.Picture.PictureUrl1" class="rounded-lg shadow-xl" />
+        </div>
+        <div class="flex items-center">
+            <StoreTwotone class="w-7 text-yellow" />
+            <p class="ml-3">店名：{{ store.RoundRestaurant.Name }}</p>
         </div>
         <div class="flex items-center">
             <Clock class="w-6 text-yellow" />
@@ -74,7 +85,7 @@ function goRoundRestaurantMap() {
             <p class="ml-3">{{ store.RoundRestaurant.Phone }}</p>
         </div>
         <div class="flex items-center">
-            <LocationOnFilled class="text-yellow w-10" />
+            <LocationOnFilled class="text-yellow w-8" />
             <p class="ml-3">{{ store.RoundRestaurant.Address }}</p>
             <a @click="goRoundRestaurantMap()" class="bg-yellow rounded-3xl ml-3 min-w-max">
                 <p class="mx-3 my-1 cursor-pointer hover:text-white">地圖</p>
