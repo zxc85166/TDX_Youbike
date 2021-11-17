@@ -35,7 +35,7 @@ function polyLine(geo) {
   const geojsonFeature = wicket.read(geo).toJson();
   //標記開始位置
   const startIcon = L.icon({
-    iconUrl: "/public/GPSfinal.png",
+    iconUrl: "https://pbs.twimg.com/media/FEYYoReagAAJuMV?format=png&name=120x120",
     iconSize: [36, 50],
     popupAnchor: [0, -20],
   });
@@ -52,7 +52,7 @@ function polyLine(geo) {
   const final = [...Arrayfinal].pop();//取最後一個值
 
   const endIcon = L.icon({
-    iconUrl: "/src/assets/pictures/GPSfinal.png",
+    iconUrl: "https://pbs.twimg.com/media/FEYYOT4aAAAehys?format=png&name=120x120",
     iconSize: [36, 50],
     popupAnchor: [0, -20],
   });
