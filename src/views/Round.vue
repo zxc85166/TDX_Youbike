@@ -44,7 +44,6 @@ function getScenicSpotData(longitude, latitude) {
         .then((response) => {
             const availableData = response.data;
             store.ScenicSpot = availableData;
-            console.log(store.ScenicSpot);
         })
         .catch((error) => console.log('error', error))
 }
