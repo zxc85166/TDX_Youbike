@@ -8,7 +8,7 @@ const store = useStore();
 const router = useRouter();
 //回首頁
 function goHome() {
-    router.push("/");
+    router.push("/round");
 }
 function goRoundDetailsMap() {
     router.push("/RoundDetailsMap");

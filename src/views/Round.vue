@@ -38,7 +38,7 @@ onMounted(() => {
 function getScenicSpotData(longitude, latitude) {
     axios({
         method: 'get',
-        url: `https://ptx.transportdata.tw/MOTC/v2/Tourism/ScenicSpot?$top=30&$spatialFilter=nearby(${longitude},${latitude},500)&$format=JSON`,
+        url: `https://ptx.transportdata.tw/MOTC/v2/Tourism/ScenicSpot?$top=30&$spatialFilter=nearby(${longitude},${latitude},1000)&$format=JSON`,
         headers: GetAuthorizationHeader()
     })
         .then((response) => {
@@ -54,7 +54,7 @@ function getRestaurantData(longitude, latitude) {
     axios({
         method: 'get',
         // url: `https://ptx.transportdata.tw/MOTC/v2/Tourism/Restaurant/NantouCounty?$top=10&$format=JSON`,
-        url: `https://ptx.transportdata.tw/MOTC/v2/Tourism/Restaurant?$top=30&$spatialFilter=nearby(${longitude},${latitude},500)&$format=JSON`,
+        url: `https://ptx.transportdata.tw/MOTC/v2/Tourism/Restaurant?$top=30&$spatialFilter=nearby(${longitude},${latitude},1000)&$format=JSON`,
         headers: GetAuthorizationHeader()
     })
         .then((response) => {
