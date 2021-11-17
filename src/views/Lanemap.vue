@@ -44,7 +44,7 @@ function polyLine(geo) {
     .addTo(mymap.value)
     .bindPopup(
       `<div class="font-bold text-lg">
-      <p class="mb-2">當前位置</p>
+      <p class="mb-2">起始位置</p>
       </div>`
     );
   //標記終點位置
@@ -61,7 +61,7 @@ function polyLine(geo) {
     .addTo(mymap.value)
     .bindPopup(
       `<div class="font-bold text-lg">
-      <p class="mb-2">當前位置</p>
+      <p class="mb-2">終點位置</p>
       </div>`
     );
   //畫線  
