@@ -33,10 +33,38 @@ function polyLine(geo) {
   // 建立一個 wkt 的實體
   const wicket = new Wkt.Wkt();
   const geojsonFeature = wicket.read(geo).toJson();
+  //標記開始位置
+  const startIcon = L.icon({
+    iconUrl: "public/icon.svg",
+    iconSize: [50, 50],
+    popupAnchor: [0, -20],
+  });
 
-  // 預設樣式
-  // myLayer = L.geoJSON(geojsonFeature).addTo(mymap);
+  L.marker([(geojsonFeature.coordinates[0][0][1]), (geojsonFeature.coordinates[0][0][0])], { icon: startIcon })
+    .addTo(mymap.value)
+    .bindPopup(
+      `<div class="font-bold text-lg">
+      <p class="mb-2">當前位置</p>
+      </div>`
+    );
+  //標記終點位置
+  const Arrayfinal = [].concat(...geojsonFeature.coordinates); //多維陣列轉一維陣列(扁平化)
+  const final = [...Arrayfinal].pop();//取最後一個值
 
+  const endIcon = L.icon({
+    iconUrl: "src/assets/pictures/icon.svg",
+    iconSize: [50, 50],
+    popupAnchor: [0, -20],
+  });
+
+  L.marker([final[1], final[0]], { icon: endIcon })
+    .addTo(mymap.value)
+    .bindPopup(
+      `<div class="font-bold text-lg">
+      <p class="mb-2">當前位置</p>
+      </div>`
+    );
+  //畫線  
   const myStyle = {
     color: "#ff0000",
     weight: 5,
@@ -44,6 +72,7 @@ function polyLine(geo) {
   };
   const myLayer = L.geoJSON(geojsonFeature, {
     style: myStyle,
+    dashArray: "5, 10",
   }).addTo(mymap.value);
 
   myLayer.addData(geojsonFeature);
@@ -53,7 +82,7 @@ function polyLine(geo) {
 
 //回首頁
 function goHome() {
-  router.push("/");
+  router.push("/lane");
 }
 </script>
 
