@@ -35,12 +35,16 @@ function polyLine(geo) {
   const geojsonFeature = wicket.read(geo).toJson();
   //標記開始位置
   const startIcon = L.icon({
-    iconUrl: "https://pbs.twimg.com/media/FEYYoReagAAJuMV?format=png&name=120x120",
+    iconUrl:
+      "https://pbs.twimg.com/media/FEYYoReagAAJuMV?format=png&name=120x120",
     iconSize: [36, 50],
     popupAnchor: [0, -20],
   });
 
-  L.marker([(geojsonFeature.coordinates[0][0][1]), (geojsonFeature.coordinates[0][0][0])], { icon: startIcon })
+  L.marker(
+    [geojsonFeature.coordinates[0][0][1], geojsonFeature.coordinates[0][0][0]],
+    { icon: startIcon }
+  )
     .addTo(mymap.value)
     .bindPopup(
       `<div class="font-bold text-lg">
@@ -49,10 +53,11 @@ function polyLine(geo) {
     );
   //標記終點位置
   const Arrayfinal = [].concat(...geojsonFeature.coordinates); //多維陣列轉一維陣列(扁平化)
-  const final = [...Arrayfinal].pop();//取最後一個值
+  const final = [...Arrayfinal].pop(); //取最後一個值
 
   const endIcon = L.icon({
-    iconUrl: "https://pbs.twimg.com/media/FEYYOT4aAAAehys?format=png&name=120x120",
+    iconUrl:
+      "https://pbs.twimg.com/media/FEYYOT4aAAAehys?format=png&name=120x120",
     iconSize: [36, 50],
     popupAnchor: [0, -20],
   });
@@ -64,7 +69,7 @@ function polyLine(geo) {
       <p class="mb-2">終點位置</p>
       </div>`
     );
-  //畫線  
+  //畫線
   const myStyle = {
     color: "#ff0000",
     weight: 5,
@@ -97,7 +102,9 @@ function goHome() {
           <LessThanFilled class="ml-6 w-9" />
         </div>
       </div>
-      <div class="mr-5 flex items-center text-lg flex-2">{{ store.RouteName }}</div>
+      <div class="mr-5 flex items-center text-lg flex-2">
+        {{ store.RouteName }}
+      </div>
     </div>
   </header>
   <div>
