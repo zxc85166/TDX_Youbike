@@ -32,7 +32,7 @@ onMounted(() => {
         const longitude = position.coords.longitude; // 經度
         const latitude = position.coords.latitude; // 緯度
         // 重新設定 view 的位置
-        mymap.value.setView([latitude, longitude], 50);
+        mymap.value.setView([latitude, longitude], 16);
         // 將經緯度當作參數傳給 getData 執行
         getStationData(longitude, latitude);
       },
@@ -51,11 +51,16 @@ onMounted(() => {
 
 
 function setMarker() {
+  const bikeIcon = L.icon({
+    iconUrl: "https://pbs.twimg.com/media/FFGqgbKaMAEKSL3?format=png&name=120x120",
+    iconSize: [36, 50],
+    popupAnchor: [0, -20],
+  });
   filterData.value.forEach((item) => {
     L.marker([
       item.StationPosition.PositionLat,
       item.StationPosition.PositionLon,
-    ], { icon: nowIcon })
+    ], { icon: bikeIcon })
       .addTo(mymap.value)
       .bindPopup(
         `<div class="font-bold text-lg">
@@ -68,6 +73,12 @@ function setMarker() {
 }
 // 串接附近的自行車租借站位資料
 const data = ref([]);
+const nowIcon = L.icon({
+  iconUrl: "https://pbs.twimg.com/media/FEYfG6DakAAUjXk?format=png&name=120x120",
+  iconSize: [26, 22.29],
+  popupAnchor: [0, -20],
+});
+
 function getStationData(longitude, latitude) {
   axios({
     method: "get",
@@ -82,11 +93,7 @@ function getStationData(longitude, latitude) {
     })
     .catch((error) => console.log("error", error));
   //標記自己位置
-  const nowIcon = L.icon({
-    iconUrl: "https://pbs.twimg.com/media/FEYfG6DakAAUjXk?format=png&name=120x120",
-    iconSize: [26, 22.29],
-    popupAnchor: [0, -20],
-  });
+
 
   L.marker([latitude, longitude], { icon: nowIcon })
     .addTo(mymap.value)
