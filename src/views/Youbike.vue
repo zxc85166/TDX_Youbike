@@ -7,12 +7,19 @@ import { Switch } from "@headlessui/vue";
 import { DirectionsBikeFilled, LessThanFilled } from "@vicons/material";
 import { Parking } from "@vicons/fa";
 import { onMounted } from "vue";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+//loading
+const isLoading = ref(false);
+const onCancel = () => console.log('User cancelled the loader.');
+const fullPage = ref(false);
 // 切換狀態
-const enabled = ref(false);
+const enabled = ref(true);
 //圖資
 const mymap = ref(null);
 
 onMounted(() => {
+  isLoading.value = true;
   mymap.value = L.map("mapid").setView([0, 0], 13);
   L.tileLayer(
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
@@ -48,19 +55,42 @@ onMounted(() => {
 });
 
 // 標記 icon
-
-
-function setMarker() {
-  const bikeIcon = L.icon({
-    iconUrl: "https://pbs.twimg.com/media/FFGqgbKaMAEKSL3?format=png&name=120x120",
-    iconSize: [36, 50],
-    popupAnchor: [0, -20],
-  });
+function setRentBikesMarker() {
   filterData.value.forEach((item) => {
     L.marker([
       item.StationPosition.PositionLat,
       item.StationPosition.PositionLon,
-    ], { icon: bikeIcon })
+    ], {
+      icon: L.divIcon({
+        iconSize: [36, 30],
+        popupAnchor: [0, -20],
+        html: `<p class="text-xl bg-black text-yellow text-center font-bold">${item.AvailableRentBikes}</p>`,
+        iconUrl: "https://pbs.twimg.com/media/FFGqgbKaMAEKSL3?format=png&name=120x120",
+      })
+    })
+      .addTo(mymap.value)
+      .bindPopup(
+        `<div class="font-bold text-lg">
+      <p class="mb-2">${item.StationAddress.Zh_tw}</p>
+      <p>可借車輛：${item.AvailableRentBikes}</p>
+      <p>可停空位：${item.AvailableReturnBikes}</p>
+      </div>`
+      );
+  });
+}
+function setReturnBikesMarker() {
+  filterData.value.forEach((item) => {
+    L.marker([
+      item.StationPosition.PositionLat,
+      item.StationPosition.PositionLon,
+    ], {
+      icon: L.divIcon({
+        iconSize: [36, 30],
+        popupAnchor: [0, -20],
+        html: `<p class="text-xl bg-yellow text-center font-bold">${item.AvailableReturnBikes}</p>`,
+        iconUrl: "https://pbs.twimg.com/media/FFGqgbKaMAEKSL3?format=png&name=120x120",
+      })
+    })
       .addTo(mymap.value)
       .bindPopup(
         `<div class="font-bold text-lg">
@@ -86,7 +116,7 @@ function getStationData(longitude, latitude) {
     headers: GetAuthorizationHeader(),
   })
     .then((response) => {
-      console.log("租借站位資料", response);
+      // console.log("租借站位資料", response);
       data.value = response.data;
 
       getAvailableData(longitude, latitude);
@@ -102,6 +132,7 @@ function getStationData(longitude, latitude) {
       <p class="mb-2">當前位置</p>
       </div>`
     );
+  isLoading.value = false;
 }
 // 串接附近的即時車位資料
 const filterData = ref([]);
@@ -112,7 +143,7 @@ function getAvailableData(longitude, latitude) {
     headers: GetAuthorizationHeader(),
   })
     .then((response) => {
-      console.log("車位資料", response);
+      // console.log("車位資料", response);
       const availableData = response.data;
 
       // 比對
@@ -127,7 +158,7 @@ function getAvailableData(longitude, latitude) {
         });
       });
       console.log("filterData", filterData.value);
-      setMarker();
+      setRentBikesMarker();
     })
     .catch((error) => console.log("error", error));
 }
@@ -170,6 +201,7 @@ function GetAuthorizationHeader() {
       </div>
       <div class="bg-white rounded-full flex items-center">
         <Switch
+          @click="setRentBikesMarker()"
           v-model="enabled"
           :class="enabled ? 'bg-black text-yellow' : 'bg-white text-black'"
           class="flex flex-row items-center gap-5 justify-center h-[42px] w-[138px] rounded-full"
@@ -179,6 +211,7 @@ function GetAuthorizationHeader() {
           <span>車</span>
         </Switch>
         <Switch
+          @click="setReturnBikesMarker()"
           v-model="enabled"
           :class="enabled ? 'bg-white text-black' : 'bg-black text-yellow'"
           class="flex flex-row items-center gap-5 justify-center h-[42px] w-[138px] rounded-full"
@@ -191,7 +224,12 @@ function GetAuthorizationHeader() {
       <div class="w-56"></div>
     </div>
   </header>
-
+  <loading
+    v-model:active="isLoading"
+    :can-cancel="true"
+    :on-cancel="onCancel"
+    :is-full-page="fullPage"
+  />
   <div id="mapid">
     <div class="fixed top-5 right-5">
       <ButtonRound />
