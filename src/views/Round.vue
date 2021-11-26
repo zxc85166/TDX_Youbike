@@ -8,10 +8,18 @@ import { Switch } from '@headlessui/vue'
 import { FastfoodFilled, LessThanFilled, LocalPhoneFilled } from '@vicons/material'
 import { Mountain } from '@vicons/fa'
 import { onMounted } from "vue";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+//loading
+const isLoading = ref(false);
+const onCancel = () => console.log('User cancelled the loader.');
+const fullPage = ref(false);
+// 切換狀態
 const enabled = ref(false)
 const store = useStore();
 const router = useRouter();
 onMounted(() => {
+    isLoading.value = true;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             function (position) {
@@ -58,6 +66,7 @@ function getRestaurantData(longitude, latitude) {
         .then((response) => {
             const availableData = response.data;
             store.Restaurant = availableData;
+            isLoading.value = false;
         })
         .catch((error) => console.log('error', error))
 }
@@ -138,6 +147,12 @@ function openRestaurantDetails(Restaurant) {
             <div class="w-56"></div>
         </div>
     </header>
+    <loading
+        v-model:active="isLoading"
+        :can-cancel="true"
+        :on-cancel="onCancel"
+        :is-full-page="fullPage"
+    />
     <!-- 景點 -->
     <div v-if="enabled" class="grid place-items-center my-[42px] mx-4">
         <p v-if="!store.ScenicSpot" class="text-gray">尚未定位</p>
