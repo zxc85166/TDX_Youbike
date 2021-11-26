@@ -19,7 +19,9 @@ const enabled = ref(false)
 const store = useStore();
 const router = useRouter();
 onMounted(() => {
-    isLoading.value = true;
+    if (store.Restaurant.length == 0) {
+        isLoading.value = true;
+    }
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             function (position) {
