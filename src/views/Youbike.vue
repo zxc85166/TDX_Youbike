@@ -17,10 +17,15 @@ const fullPage = ref(false);
 const enabled = ref(true);
 //圖資
 const mymap = ref(null);
-
+//回位
+const lon = ref(null);
+const lat = ref(null);
+function backToNowLocation() {
+  mymap.value.setView([lat.value, lon.value], 16);
+}
 onMounted(() => {
   isLoading.value = true;
-  mymap.value = L.map("mapid").setView([0, 0], 13);
+  mymap.value = L.map("mapid");
   L.tileLayer(
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
     {
@@ -38,6 +43,8 @@ onMounted(() => {
       function (position) {
         const longitude = position.coords.longitude; // 經度
         const latitude = position.coords.latitude; // 緯度
+        lat.value = latitude;
+        lon.value = longitude;
         // 重新設定 view 的位置
         mymap.value.setView([latitude, longitude], 16);
         // 將經緯度當作參數傳給 getData 執行
@@ -231,7 +238,7 @@ function GetAuthorizationHeader() {
     :is-full-page="fullPage"
   />
   <div id="mapid">
-    <div class="fixed top-5 right-5">
+    <div @click="backToNowLocation" class="fixed top-5 right-5">
       <ButtonRound />
     </div>
   </div>
