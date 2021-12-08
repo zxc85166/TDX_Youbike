@@ -27,7 +27,7 @@
     "@types/tailwindcss": "^2.2.4",
     "@vicons/fa": "^0.11.0",
     "@vicons/material": "^0.11.0",
-    "@vitejs/plugin-vue": "^1.9.4",
+    "@vitejs/plugin-vue": "^1.10.2",
     "@vue-leaflet/vue-leaflet": "^0.6.1",
     "autoprefixer": "^10.4.0",
     "sass": "^1.43.4",
