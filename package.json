@@ -10,7 +10,7 @@
     "axios": "^0.24.0",
     "jssha": "^3.2.0",
     "leaflet": "^1.7.1",
-    "pinia": "^2.0.0-rc.10",
+    "pinia": "^2.0.10",
     "vue": "^3.2.22",
     "vue-axios": "^3.4.0",
     "vue-loading-overlay": "^4.0.4",
